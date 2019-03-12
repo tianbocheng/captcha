@@ -1,0 +1,9 @@
+# 启动脚本使用
+##  启动
+./run.sh start
+##  停止
+./run.sh stop
+##  重启
+./run.sh restart
+##  状态
+./run.sh status
