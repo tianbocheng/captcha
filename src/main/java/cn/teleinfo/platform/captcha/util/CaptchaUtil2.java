@@ -1,7 +1,7 @@
-package com.teleinfo.captcha.util;
+package cn.teleinfo.platform.captcha.util;
 
 import cn.hutool.captcha.CaptchaUtil;
-import com.teleinfo.captcha.model.ClickCaptcha;
+import cn.teleinfo.platform.captcha.model.ClickCaptcha;
 
 /**
  * @author TBC

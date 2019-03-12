@@ -1,4 +1,4 @@
-package com.teleinfo.captcha.common;
+package cn.teleinfo.platform.captcha.common;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,11 +1,11 @@
-package com.teleinfo.captcha.controller;
+package cn.teleinfo.platform.captcha.controller;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.teleinfo.captcha.common.ReturnData;
-import com.teleinfo.captcha.model.ClickCaptcha;
-import com.teleinfo.captcha.util.CaptchaUtil2;
+import cn.teleinfo.platform.captcha.util.CaptchaUtil2;
+import cn.teleinfo.platform.captcha.common.ReturnData;
+import cn.teleinfo.platform.captcha.model.ClickCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;

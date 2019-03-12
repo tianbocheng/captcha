@@ -1,4 +1,4 @@
-package com.teleinfo.captcha.model;
+package cn.teleinfo.platform.captcha.model;
 
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.CodeGenerator;
@@ -10,8 +10,8 @@ import cn.hutool.core.util.ImageUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import cn.teleinfo.platform.captcha.generator.ChineseGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teleinfo.captcha.generator.ChineseGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

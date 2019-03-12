@@ -1,4 +1,4 @@
-package com.teleinfo.captcha.repository;
+package cn.teleinfo.platform.captcha.repository;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;

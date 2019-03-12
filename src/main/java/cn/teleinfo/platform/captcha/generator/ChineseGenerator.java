@@ -1,4 +1,4 @@
-package com.teleinfo.captcha.generator;
+package cn.teleinfo.platform.captcha.generator;
 
 import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.core.util.CharsetUtil;

@@ -1,11 +1,10 @@
-package com.teleinfo.captcha.config;
+package cn.teleinfo.platform.captcha.config;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONUtil;
-import com.teleinfo.captcha.common.ReturnData;
-import com.teleinfo.captcha.repository.ClientRepository;
+import cn.teleinfo.platform.captcha.repository.ClientRepository;
+import cn.teleinfo.platform.captcha.common.ReturnData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 

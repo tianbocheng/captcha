@@ -1,7 +1,7 @@
-package com.teleinfo.captcha.config;
+package cn.teleinfo.platform.captcha.config;
 
 import cn.hutool.json.JSONUtil;
-import com.teleinfo.captcha.common.ReturnData;
+import cn.teleinfo.platform.captcha.common.ReturnData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
