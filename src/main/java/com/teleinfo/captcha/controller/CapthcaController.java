@@ -11,6 +11,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,7 +52,7 @@ public class CapthcaController {
             return ReturnData.builder().status(ReturnData.FAIL).message("宽度不符合规则(260-400)").data(null).build();
         }
 
-        if (height < 50 || height > 400) {
+        if (height < 100 || height > 200) {
             return ReturnData.builder().status(ReturnData.FAIL).message("高度不符合规则(50-400)").build();
         }
 
@@ -77,7 +80,18 @@ public class CapthcaController {
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnData<?> validateCode(@RequestParam(name = "randomStr") String randomStr, @RequestBody String codeInRequest) {
+    public ReturnData<?> validateCode(
+            @RequestParam(name = "width", required = false, defaultValue = "300") int width,
+            @RequestParam(name = "height", required = false, defaultValue = "150") int height,
+            @RequestParam(name = "randomStr") String randomStr, @RequestBody String codeInRequest) {
+
+        if (height < 100 || height > 200) {
+            return ReturnData.builder().status(ReturnData.FAIL).message("高度不符合规则(50-400)").build();
+        }
+
+        if (width < 260 || width > 400) {
+            return ReturnData.builder().status(ReturnData.FAIL).message("宽度不符合规则(260-400)").data(null).build();
+        }
 
         if (StrUtil.isBlank(codeInRequest)) {
             return ReturnData.builder().status(ReturnData.FAIL).message("验证码的值不能为空").build();
@@ -87,12 +101,28 @@ public class CapthcaController {
             return ReturnData.builder().status(ReturnData.FAIL).message("验证码过期或不存在").build();
         }
         ClickCaptcha codeInRredis = JSONUtil.toBean(codeInRredisStr, ClickCaptcha.class, false);
+        List<Double[]> srand = codeInRredis.getSrand();
+        // 对原有尺寸进行等比缩放
+        int widthIn = codeInRredis.getWidth();
+        int heightIn = codeInRredis.getHeight();
+        BigDecimal flexWidth = new BigDecimal(width).divide(new BigDecimal(widthIn), 5, RoundingMode.HALF_UP);
+        BigDecimal flexHeight = new BigDecimal(height).divide(new BigDecimal(heightIn), 5, RoundingMode.HALF_UP);
+
+        if (flexWidth.doubleValue() != BigDecimal.ONE.doubleValue() || flexHeight.doubleValue() != BigDecimal.ONE.doubleValue()) {
+            for (int i = 0; i < srand.size(); i++) {
+                Double[] point = srand.get(i);
+                point[0] = new BigDecimal(point[0]).multiply(flexWidth).doubleValue();
+                point[1] = new BigDecimal(point[1]).multiply(flexHeight).doubleValue();
+                point[2] = new BigDecimal(point[2]).multiply(new BigDecimal(Math.hypot(flexWidth.doubleValue(), flexHeight.doubleValue()))).doubleValue();
+            }
+        }
+
         if (!codeInRredis.verify(codeInRequest)) {
             return ReturnData.builder().status(ReturnData.FAIL).message("验证失败").build();
         }
         String key = IdUtil.fastUUID();
         captchaRepository.opsForValue().set(CONFIRM_PREFIX + key, key, 60, TimeUnit.SECONDS);
-        return ReturnData.builder().data("验正成功").build();
+        return ReturnData.builder().data(key).build();
     }
 
     /**

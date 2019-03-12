@@ -4,23 +4,17 @@ import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ImageUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.teleinfo.captcha.generator.ChineseGenerator;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.Transient;
 import org.springframework.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
@@ -30,8 +24,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * 点击类型的验证码
@@ -155,7 +149,7 @@ public class ClickCaptcha implements ICaptcha {
                 code += key;
                 srand.add(allRand.get(key));
             }
-            log.info("校验的验证码******" + ArrayUtil.toString(srand));
+            log.info("校验的验证码******" + JSONUtil.toJsonStr(srand));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FontFormatException e) {
