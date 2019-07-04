@@ -2,6 +2,7 @@ package cn.teleinfo.platform.captcha.model;
 
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.captcha.generator.CodeGenerator;
+import cn.hutool.core.codec.Base64Encoder;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
+import javax.xml.transform.Source;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -72,9 +74,9 @@ public class ClickCaptcha implements ICaptcha {
     @JsonIgnore
     protected List<Double[]> srand = new ArrayList<>();
     /**
-     * 下载相对路径
+     * 图片文件base64
      */
-    protected String url;
+    protected String imageSource;
 
     public ClickCaptcha(int codeCount) {
         this(300, 150, codeCount, 0);
@@ -135,12 +137,8 @@ public class ClickCaptcha implements ICaptcha {
                 allRand.put(rand, new Double[]{x, y, fontSize});
             }
             g.dispose();
-            log.info("生成的验证码******" + ArrayUtil.toString(srand));
-            // 保存图片到class/temp目录下
-            url = "temp/" + DateUtil.formatDate(DateUtil.date()) + "/" + IdUtil.fastUUID() + ".jpg";
-            File captchaFileLocal = FileUtil.touch("static/" + url);
-            log.info("文件保存位置******" + captchaFileLocal.getAbsolutePath());
-            ImageIO.write(image, "JPEG", captchaFileLocal);
+            // 将图片base64
+            this.imageSource = "data:image/jpg;base64," + ImageUtil.toBase64(image, "jpg");
 
             // 随机的key
             Set<String> realList = RandomUtil.randomEleSet(allRand.keySet(), codeCount - interfereCount);
